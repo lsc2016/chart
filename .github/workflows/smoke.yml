@@ -2,6 +2,11 @@ name: smoke
 # 실제 브라우저로 실제 시세가 뜨는지 확인 (Actions 탭에서 수동 실행)
 on:
   workflow_dispatch:
+    inputs:
+      url:
+        description: '확인할 주소 (비우면 이 저장소 파일로 확인)'
+        required: false
+        default: ''
 jobs:
   smoke:
     runs-on: ubuntu-latest
@@ -11,7 +16,7 @@ jobs:
         with: { node-version: 22 }
       - run: npm i --no-save playwright@1 && npx playwright install --with-deps chromium
       - run: python3 -m http.server 8000 &
-      - run: node tools/smoke.mjs http://localhost:8000/
+      - run: node tools/smoke.mjs "${{ inputs.url || 'http://localhost:8000/' }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: smoke-screens, path: 'smoke-*.png' }
