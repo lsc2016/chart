@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#0f1218">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="chart">
+  <title>chart</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a id="logo" class="logo" href="#/" title="첫 화면으로"><span class="logo-mark">◢</span>chart</a>
+      <button id="symbolBtn" class="symbol-btn" title="종목 검색 ( / )">
+        <span class="sym-text"><b id="symName">…</b><small id="symSub"></small></span>
+        <span class="sym-q"><span id="symPrice" class="sym-price"></span><span id="symChg" class="sym-chg"></span></span>
+        <span class="sym-search" aria-hidden="true">⌕</span>
+      </button>
+      <button id="starBtn" class="icon-btn star" title="관심종목에 추가">☆</button>
+      <nav id="intervals" class="intervals" aria-label="시간 단위"></nav>
+      <div class="spacer"></div>
+      <button id="indBtn" class="text-btn wide-only" title="지표">ƒ 지표</button>
+      <button id="settingsBtn" class="icon-btn" title="설정" aria-label="설정">⚙</button>
+      <button id="watchToggle" class="icon-btn wide-only" title="관심종목 열기/닫기" aria-label="관심종목">☰</button>
+    </header>
+
+    <aside id="drawbar" class="drawbar" aria-label="그리기 도구">
+      <button data-mode="cursor" class="tool" title="선택·이동 (Esc)"><span>↖</span><small>선택</small></button>
+      <button data-mode="hline" class="tool" title="수평선"><span>―</span><small>수평선</small></button>
+      <button data-mode="trend" class="tool" title="추세선"><span>╱</span><small>추세선</small></button>
+      <button data-mode="note" class="tool" title="메모"><span>✎</span><small>메모</small></button>
+      <div class="tool-sep"></div>
+      <button id="drawEdit" class="tool" title="메모 고치기" disabled><span>✐</span><small>고치기</small></button>
+      <button id="drawDelete" class="tool" title="선택한 것 지우기 (Delete)" disabled><span>⌫</span><small>지우기</small></button>
+      <button id="drawClear" class="tool" title="이 종목 그림 모두 지우기" disabled><span>🗑</span><small>전체</small></button>
+    </aside>
+
+    <main class="chart-wrap">
+      <div id="chart" class="chart"></div>
+      <div id="legend" class="legend"></div>
+      <div id="status" class="status" hidden></div>
+    </main>
+
+    <aside id="watch" class="watch" aria-label="관심종목"></aside>
+    <div id="watchBackdrop" class="watch-backdrop"></div>
+
+    <nav class="bottombar" aria-label="메뉴">
+      <button id="mWatch"><span>☆</span>목록</button>
+      <button id="mInd"><span>ƒ</span>지표</button>
+      <button id="mDraw"><span>✎</span>그리기</button>
+    </nav>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <noscript>이 앱은 자바스크립트가 필요합니다.</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

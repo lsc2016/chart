@@ -1,0 +1,13 @@
+{
+  "_설명": "자동으로 시세를 받을 주식 목록. symbol은 Yahoo Finance 기호(미국: AAPL, 한국 코스피: 005930.KS, 코스닥: 035720.KQ). 고친 뒤 main에 올리면 다음 수집 때 반영됩니다.",
+  "stocks": [
+    { "symbol": "AAPL",      "name": "애플",     "market": "US" },
+    { "symbol": "NVDA",      "name": "엔비디아", "market": "US" },
+    { "symbol": "TSLA",      "name": "테슬라",   "market": "US" },
+    { "symbol": "SPY",       "name": "S&P500 ETF", "market": "US" },
+    { "symbol": "005930.KS", "name": "삼성전자", "market": "KR" },
+    { "symbol": "000660.KS", "name": "SK하이닉스", "market": "KR" },
+    { "symbol": "035420.KS", "name": "NAVER",    "market": "KR" }
+  ],
+  "intervals": ["15m", "1h", "1d", "1w"]
+}
