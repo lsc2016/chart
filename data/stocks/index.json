@@ -1,0 +1,81 @@
+{
+ "updatedAt": "2026-11-01T10:42:14.349Z",
+ "intervals": [
+  "15m",
+  "1h",
+  "1d",
+  "1w"
+ ],
+ "stocks": [
+  {
+   "symbol": "AAPL",
+   "name": "애플",
+   "market": "US",
+   "currency": "USD",
+   "price": 344.63,
+   "prevClose": 348.91,
+   "changePct": -1.23,
+   "time": 1793390401
+  },
+  {
+   "symbol": "NVDA",
+   "name": "엔비디아",
+   "market": "US",
+   "currency": "USD",
+   "price": 204.64,
+   "prevClose": 213.66,
+   "changePct": -4.22,
+   "time": 1793390401
+  },
+  {
+   "symbol": "TSLA",
+   "name": "테슬라",
+   "market": "US",
+   "currency": "USD",
+   "price": 399.81,
+   "prevClose": 403.3,
+   "changePct": -0.87,
+   "time": 1793390400
+  },
+  {
+   "symbol": "SPY",
+   "name": "S&P500 ETF",
+   "market": "US",
+   "currency": "USD",
+   "price": 755.72,
+   "prevClose": 769.36,
+   "changePct": -1.77,
+   "time": 1793390400
+  },
+  {
+   "symbol": "005930.KS",
+   "name": "삼성전자",
+   "market": "KR",
+   "currency": "KRW",
+   "price": 225000,
+   "prevClose": 232000,
+   "changePct": -3.02,
+   "time": 1793341809
+  },
+  {
+   "symbol": "000660.KS",
+   "name": "SK하이닉스",
+   "market": "KR",
+   "currency": "KRW",
+   "price": 1418000,
+   "prevClose": 1526000,
+   "changePct": -7.08,
+   "time": 1793341805
+  },
+  {
+   "symbol": "035420.KS",
+   "name": "NAVER",
+   "market": "KR",
+   "currency": "KRW",
+   "price": 172300,
+   "prevClose": 174900,
+   "changePct": -1.49,
+   "time": 1793341807
+  }
+ ]
+}
