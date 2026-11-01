@@ -56,7 +56,7 @@ export class Watchlist {
     const add = cur0 && !this.has(cur0)
       ? el('button', { class: 'add-btn', text: `＋ ${describe(cur0).name} 추가`, onclick: () => this.toggle(cur0) })
       : null;
-    this.root.replaceChildren(head, el('div', { class: 'watch-list' }, items.length ? items : el('p', { class: 'muted pad', text: '비어 있습니다. 차트 위 ☆를 눌러 추가하세요.' })), add);
+    this.root.replaceChildren(...[head, el('div', { class: 'watch-list' }, items.length ? items : el('p', { class: 'muted pad', text: '비어 있습니다. 차트 위 ☆를 눌러 추가하세요.' })), add].filter(Boolean));
   }
 
   _paint(key, q) {

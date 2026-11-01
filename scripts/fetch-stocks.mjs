@@ -13,7 +13,7 @@ const PLAN = {
   '15m': { interval: '15m', range: '60d' },
   '1h': { interval: '60m', range: '730d' },
   '1d': { interval: '1d', range: '10y' },
-  '1w': { interval: '1wk', range: 'max' },
+  '1w': { interval: '1wk', range: '10y' }, // 'max'로 받으면 Yahoo가 듬성듬성(분기 단위)으로 줌
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -50,7 +50,8 @@ function toCandles(r, iv) {
   for (let i = 0; i < ts.length; i++) {
     if (q.open[i] == null || q.close[i] == null) continue;
     // 일·주봉은 거래소 날짜의 00:00 UTC로 맞춤 (화면에서 날짜가 하루 밀리지 않게)
-    const t = daily ? Math.floor((ts[i] + off) / 86400) * 86400 : ts[i];
+    let t = daily ? Math.floor((ts[i] + off) / 86400) * 86400 : ts[i];
+    if (iv === '1w') t = Math.floor((t - 4 * 86400) / 604800) * 604800 + 4 * 86400; // 주봉은 그 주 월요일로
     const row = [t, round(q.open[i], dec), round(q.high[i], dec), round(q.low[i], dec), round(q.close[i], dec), q.volume[i] || 0];
     if (out.length && out[out.length - 1][0] === t) out[out.length - 1] = row; // 같은 시각이 두 번 오면 나중 것
     else out.push(row);
@@ -75,7 +76,9 @@ for (const s of cfg.stocks) {
       const r = await yahoo(s.symbol, PLAN[iv].interval, PLAN[iv].range);
       const candles = toCandles(r, iv);
       if (!candles.length) throw new Error('캔들 없음');
-      await writeFile(path.join(dir, `${iv}.json`), JSON.stringify({ symbol: s.symbol, interval: iv, gmtoffset: r.meta.gmtoffset || 0, currency: r.meta.currency, candles }));
+      // 캔들 한 줄에 하나씩 → 갱신 때 바뀐 줄만 기록되어 저장소가 덜 커짐
+      const head = JSON.stringify({ symbol: s.symbol, interval: iv, gmtoffset: r.meta.gmtoffset || 0, currency: r.meta.currency }).slice(0, -1);
+      await writeFile(path.join(dir, `${iv}.json`), `${head},"candles":[\n${candles.map((c) => JSON.stringify(c)).join(',\n')}\n]}\n`);
       if (iv === '1d') {
         const m = r.meta;
         const price = m.regularMarketPrice ?? candles.at(-1)[4];

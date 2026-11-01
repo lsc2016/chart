@@ -1,0 +1,18 @@
+name: check
+# 합치기 요청(PR) 때 간단 점검: 문법 오류, 지표 계산
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: 문법 확인
+        run: for f in $(find js scripts tools -name '*.js' -o -name '*.mjs'); do node --check "$f" || exit 1; done
+      - name: 지표 계산 점검
+        run: node tools/test-indicators.mjs
+      - name: 주식 설정 파일 확인
+        run: node -e "const c=require('./config/stocks.json'); if(!Array.isArray(c.stocks)) throw new Error('stocks 목록이 없습니다'); console.log(c.stocks.length + '종목')"

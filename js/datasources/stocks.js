@@ -44,7 +44,7 @@ export const stocks = {
 
   info(symbol) {
     const s = indexCache?.stocks?.find((x) => x.symbol === symbol);
-    return { name: s?.name || symbol, sub: symbol, currency: s?.currency || (/\.(KS|KQ)$/.test(symbol) ? 'KRW' : 'USD'), updatedAt: s?.time || indexCache?.updatedAt };
+    return { name: s?.name || symbol, sub: symbol, currency: s?.currency || (/\.(KS|KQ)$/.test(symbol) ? 'KRW' : 'USD'), updatedAt: s?.time || (indexCache?.updatedAt ? Date.parse(indexCache.updatedAt) / 1000 : null) };
   },
 
   async candles(symbol, interval) {

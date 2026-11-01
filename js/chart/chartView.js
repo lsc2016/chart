@@ -102,6 +102,7 @@ export class ChartView {
   priceToY(p) { return this.candles.priceToCoordinate(p); }
   yToPrice(y) { return this.candles.coordinateToPrice(y); }
   paneHeight() { return this.chart.panes()[0]?.getHeight() ?? this.el.clientHeight; }
+  paneWidth() { return this.chart.timeScale().width(); }
 
   // ── 데이터 ─────────────────────────────
   _mapBar(b) { return { time: this.toChart(b.time), open: b.open, high: b.high, low: b.low, close: b.close }; }
@@ -255,7 +256,8 @@ export class ChartView {
     return this.ind.series
       .filter((s) => !s.key.startsWith('bbM') && s.key !== 'macdH')
       .map((s) => {
-        const d = param?.seriesData?.get(s.api);
+        let d = param?.seriesData?.get(s.api);
+        if (!param) { const all = s.api.data(); d = all[all.length - 1]; }
         return { label: s.label, value: d?.value, color: s.api.options().color };
       });
   }

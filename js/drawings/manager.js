@@ -22,14 +22,13 @@ export class DrawingManager {
     view.candles.attachPrimitive(this.layer);
 
     const chart = view.chart;
-    chart.subscribeClick((p) => this._click(p));
     chart.subscribeCrosshairMove((p) => this._move(p));
 
     const el = view.el;
     el.addEventListener('pointerdown', (e) => this._down(e), true);
     window.addEventListener('pointermove', (e) => this._dragMove(e));
-    window.addEventListener('pointerup', () => this._up());
-    window.addEventListener('pointercancel', () => this._up());
+    window.addEventListener('pointerup', (e) => this._up(e));
+    window.addEventListener('pointercancel', () => { this._tapStart = null; this._up(null); });
     el.addEventListener('pointermove', (e) => this._hover(e));
   }
 
@@ -81,16 +80,15 @@ export class DrawingManager {
     return t == null || price == null ? null : { t, price };
   }
 
-  _click(p) {
-    if (!p.point || (p.paneIndex ?? 0) !== 0) return;
-    if (this._suppressClick) { this._suppressClick = false; return; }
+  // 짧게 누르고 뗀 것(탭) — 라이브러리의 클릭 이벤트는 빠른 연속 클릭을 놓치므로 직접 판정
+  _tap(point) {
     const m = this.mode;
     if (m === 'cursor') {
-      const hit = this.layer.hitTest(p.point.x, p.point.y);
+      const hit = this.layer.hitTest(point.x, point.y);
       this.selectedId = hit?.id || null;
       return this.redraw();
     }
-    const pt = this._pt(p.point);
+    const pt = this._pt(point);
     if (!pt) return;
     if (m === 'hline') {
       this._add({ id: uid(), type: 'hline', price: pt.price, color: TOOL_COLORS.hline });
@@ -138,9 +136,11 @@ export class DrawingManager {
 
   // 그림을 잡아 끌기: 잡는 순간 차트 이동을 잠시 끈다
   _down(e) {
-    if (this.mode !== 'cursor') return;
+    if (e.button > 0) return;
     const { x, y } = this._local(e);
-    if (y > this.view.paneHeight()) return;
+    if (y > this.view.paneHeight() || x > this.view.paneWidth()) return;
+    this._tapStart = { x, y, at: Date.now(), id: e.pointerId };
+    if (this.mode !== 'cursor') return;
     const hit = this.layer.hitTest(x, y);
     if (!hit) return;
     const d = this.items.find((i) => i.id === hit.id);
@@ -170,11 +170,18 @@ export class DrawingManager {
     this.layer.requestUpdate();
   }
 
-  _up() {
-    if (!this.drag) return;
-    if (this.drag.moved) { this.save(); this._suppressClick = true; setTimeout(() => (this._suppressClick = false), 300); }
-    this.drag = null;
-    this.view.chart.applyOptions({ handleScroll: true, handleScale: true });
-    this.redraw();
+  _up(e) {
+    const ts = this._tapStart;
+    this._tapStart = null;
+    if (this.drag) {
+      if (this.drag.moved) this.save();
+      this.drag = null;
+      this.view.chart.applyOptions({ handleScroll: true, handleScale: true });
+      this.redraw();
+      return;
+    }
+    if (!ts || !e || e.pointerId !== ts.id) return;
+    const { x, y } = this._local(e);
+    if (Math.hypot(x - ts.x, y - ts.y) < 8 && Date.now() - ts.at < 700) this._tap({ x, y });
   }
 }

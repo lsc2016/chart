@@ -169,6 +169,7 @@ ul.hint { padding-left: 18px; }
   .sheet-grip { display: block; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 36px; height: 4px; border-radius: 2px; background: #3a4454; }
   .status { bottom: 30px; }
   .legend { font-size: 11px; }
+  input, select { font-size: 16px; } /* 아이폰이 입력칸을 누를 때 확대하지 않게 */
 }
 
 /* 폰 가로: 높이가 낮으면 머리줄을 얇게 */

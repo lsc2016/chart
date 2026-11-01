@@ -31,6 +31,7 @@ function applyColors() {
 const view = new ChartView($('#chart'), { colors: applyColors() });
 view.setIndicators(store.getIndicators());
 const drawings = new DrawingManager(view, { onChange: paintDrawbar });
+window.chartApp = { view, drawings }; // 브라우저 개발자 도구에서 살펴보기용
 const watch = new Watchlist($('#watch'), {
   onPick: (key) => { setWatchOpen(false, true); navigate(key, state.interval); },
   getCurrent: () => state.key,
@@ -118,7 +119,7 @@ async function load(key, interval) {
   drawings.setKey(key, d2.currency);
   state.loaded = true;
   if (!bars.length) setStatus('데이터가 없습니다', 'error');
-  else if (!p.source.realtime) setStatus(`주식 시세 · ${d2.updatedAt ? fmtTime(Date.parse(d2.updatedAt) / 1000) + ' 기준' : ''} · 장중 30분마다 자동 수집 (실시간 아님)`, 'info');
+  else if (!p.source.realtime) setStatus(`주식 시세 · ${d2.updatedAt ? fmtTime(d2.updatedAt) + ' 기준' : '수집 전'} · 장중 30분마다 자동 수집 (실시간 아님)`, 'info');
   else setStatus('');
   paintHeader(); paintLegend();
 
@@ -211,13 +212,16 @@ function paintLegend(param) {
   if (bar) parts.push(el('div', { class: 'lg-ohlc ' + cls },
     el('span', {}, '시 ', el('b', { text: f(bar.open) })), el('span', {}, '고 ', el('b', { text: f(bar.high) })),
     el('span', {}, '저 ', el('b', { text: f(bar.low) })), el('span', {}, '종 ', el('b', { text: f(bar.close) }))));
-  const vals = view.legendValues(param).filter((v) => v.value != null || !param);
+  const vals = view.legendValues(param);
   if (vals.length) parts.push(el('div', { class: 'lg-ind' }, ...vals.map((v) => el('span', { style: { color: v.color } }, `${v.label} `, el('b', { text: v.value != null ? f(v.value) : '' })))));
   $('#legend').replaceChildren(...parts);
 }
 view.onCrosshair((p) => paintLegend(p.time ? p : null));
 
-function setStatus(msg, kind = '') {
+// 안내 문구: 기본 문구(주식 수집 시각 등) 위에 그리기 안내를 잠시 덮어 씀
+let baseStatus = ['', ''];
+function setStatus(msg, kind = '', { hint = false } = {}) {
+  if (!hint) baseStatus = [msg, kind];
   const s = $('#status');
   s.textContent = msg;
   s.className = 'status ' + kind;
@@ -232,7 +236,7 @@ function paintDrawbar(mgr) {
   $('#drawEdit').disabled = !sel || sel.type !== 'note';
   $('#drawClear').disabled = !mgr.items.length;
   const hint = { hline: '차트를 눌러 수평선을 놓으세요', trend: mgr.pending ? '끝점을 누르세요' : '시작점을 누르세요', note: '메모를 붙일 곳을 누르세요' }[mgr.mode];
-  if (hint) setStatus(hint, 'info'); else if ($('#status').classList.contains('info') && /누르/.test($('#status').textContent)) setStatus('');
+  if (hint) setStatus(hint, 'info', { hint: true }); else setStatus(...baseStatus);
 }
 $$('#drawbar [data-mode]').forEach((b) => b.addEventListener('click', () => drawings.setMode(drawings.mode === b.dataset.mode ? 'cursor' : b.dataset.mode)));
 $('#drawDelete').addEventListener('click', () => drawings.deleteSelected());
