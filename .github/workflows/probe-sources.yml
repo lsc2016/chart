@@ -1,9 +1,7 @@
 name: probe-sources
+# 데이터 출처 시험 — Actions 탭에서 "Run workflow"로 수동 실행
 on:
   workflow_dispatch:
-  push:
-    branches: [claude/tender-gauss-2lh4jo]
-    paths: [tools/probe*, .github/workflows/probe-sources.yml]
 jobs:
   probe:
     runs-on: ubuntu-latest
