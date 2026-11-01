@@ -1,0 +1,17 @@
+name: smoke
+# 실제 브라우저로 실제 시세가 뜨는지 확인 (Actions 탭에서 수동 실행)
+on:
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm i --no-save playwright@1 && npx playwright install --with-deps chromium
+      - run: python3 -m http.server 8000 &
+      - run: node tools/smoke.mjs http://localhost:8000/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: smoke-screens, path: 'smoke-*.png' }
