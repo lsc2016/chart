@@ -110,7 +110,10 @@ async function load(key, interval) {
     if (my !== loadSeq) return;
     view.setData([], { interval, currency: d.currency });
     drawings.setKey(key, d.currency);
-    return setStatus(`불러오지 못했습니다 — ${e.message}`, 'error');
+    paintHeader();
+    // 잠시 뒤 한 번 더 자동으로 시도 (그사이 다른 종목으로 옮겼으면 안 함)
+    setTimeout(() => { if (my === loadSeq) load(key, interval); }, 15000);
+    return setStatus(`불러오지 못했습니다 — ${e.message} · 15초 뒤 다시 시도`, 'error');
   }
   if (my !== loadSeq) return;
   const d2 = describe(key);
@@ -167,7 +170,7 @@ function paintHeader() {
   if (!state.key) return;
   const d = describe(state.key);
   const q = quotes.get(state.key);
-  const price = q?.price ?? view.lastBar()?.close;
+  const price = q?.price ?? (state.loaded ? view.lastBar()?.close : null);
   $('#symName').textContent = d.name;
   $('#symSub').textContent = `${d.sourceLabel} · ${d.sub}`;
   $('#symPrice').textContent = price != null ? fmtPrice(price, d.currency) : '';

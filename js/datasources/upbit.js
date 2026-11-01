@@ -13,7 +13,12 @@ async function call(url) {
   const wait = last + 150 - Date.now();
   if (wait > 0) await sleep(wait);
   last = Date.now();
-  return fetchJSON(url, { retries: 2 });
+  // 호출 제한(429)에 걸리면 응답에 허용 표시가 빠져 브라우저엔 'Failed to fetch'로 보임 → 간격을 늘려 다시 시도
+  try {
+    return await fetchJSON(url, { retries: 3, backoff: 1000 });
+  } catch (e) {
+    throw new Error(/fetch|429/i.test(e.message) ? '업비트가 응답하지 않습니다 (잠깐 호출 제한일 수 있음)' : e.message);
+  }
 }
 
 const toBar = (c) => ({
