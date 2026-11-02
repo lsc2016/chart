@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-02T18:39:01.719Z",
+ "updatedAt": "2026-11-02T19:11:28.393Z",
  "intervals": [
   "15m",
   "1h",
@@ -12,40 +12,40 @@
    "name": "애플",
    "market": "US",
    "currency": "USD",
-   "price": 336.31,
+   "price": 337.08,
    "prevClose": 344.63,
-   "changePct": -2.41,
-   "time": 1793644726
+   "changePct": -2.19,
+   "time": 1793646674
   },
   {
    "symbol": "NVDA",
    "name": "엔비디아",
    "market": "US",
    "currency": "USD",
-   "price": 206.37,
+   "price": 205.15,
    "prevClose": 204.64,
-   "changePct": 0.85,
-   "time": 1793644729
+   "changePct": 0.25,
+   "time": 1793646675
   },
   {
    "symbol": "TSLA",
    "name": "테슬라",
    "market": "US",
    "currency": "USD",
-   "price": 407.6,
+   "price": 406.42,
    "prevClose": 399.81,
-   "changePct": 1.95,
-   "time": 1793644729
+   "changePct": 1.65,
+   "time": 1793646676
   },
   {
    "symbol": "SPY",
    "name": "S&P500 ETF",
    "market": "US",
    "currency": "USD",
-   "price": 758.21,
+   "price": 756.37,
    "prevClose": 755.72,
-   "changePct": 0.33,
-   "time": 1793644731
+   "changePct": 0.09,
+   "time": 1793646679
   },
   {
    "symbol": "005930.KS",
