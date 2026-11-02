@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-02T17:39:18.102Z",
+ "updatedAt": "2026-11-02T18:19:41.061Z",
  "intervals": [
   "15m",
   "1h",
@@ -42,10 +42,10 @@
    "name": "S&P500 ETF",
    "market": "US",
    "currency": "USD",
-   "price": 758.36,
+   "price": 758.87,
    "prevClose": 755.72,
-   "changePct": 0.35,
-   "time": 1793641149
+   "changePct": 0.42,
+   "time": 1793643572
   },
   {
    "symbol": "005930.KS",
