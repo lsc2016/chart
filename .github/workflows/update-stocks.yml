@@ -39,7 +39,9 @@ jobs:
           git add data/stocks
           if git diff --cached --quiet; then echo "바뀐 것 없음"; exit 0; fi
           git commit -m "주식 시세 갱신 $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && break; sleep 5; done
+          pushed=0
+          for i in 1 2 3; do git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && { pushed=1; break; }; sleep 5; done
+          if [ "$pushed" != 1 ]; then echo "푸시 3번 모두 실패"; exit 1; fi
 
   deploy:
     needs: fetch
