@@ -66,8 +66,16 @@ export function importAll(file, mode) {
   if (!file || file.app !== 'chart' || typeof file.data !== 'object') throw new Error('chart 설정 파일이 아닙니다');
   const d = file.data;
   if (mode === 'replace') {
-    for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k);
-    for (const [k, v] of Object.entries(d)) write(k, v);
+    // 지우기 전에 지금 저장값을 그대로 들고 있다가, 쓰는 도중 실패하면(저장 공간 부족 등) 되돌린다
+    const backup = Object.keys(localStorage).filter((k) => k.startsWith(PREFIX)).map((k) => [k, localStorage.getItem(k)]);
+    try {
+      for (const [k] of backup) localStorage.removeItem(k);
+      for (const [k, v] of Object.entries(d)) localStorage.setItem(PREFIX + k, JSON.stringify(v));
+    } catch (e) {
+      for (const k of Object.keys(localStorage)) if (k.startsWith(PREFIX)) localStorage.removeItem(k);
+      for (const [k, raw] of backup) { try { localStorage.setItem(k, raw); } catch {} }
+      throw new Error('저장 공간이 부족해 덮어쓰지 못했습니다. 원래 설정은 그대로입니다');
+    }
   } else {
     for (const [k, v] of Object.entries(d)) {
       if (k === 'watchlist') {
