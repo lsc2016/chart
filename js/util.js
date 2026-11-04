@@ -18,19 +18,19 @@ export function el(tag, attrs = {}, ...children) {
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function fetchJSON(url, { retries = 1, timeout = 15000 } = {}) {
+export async function fetchJSON(url, { retries = 1, timeout = 15000, backoff = 400 } = {}) {
   let lastErr;
   for (let i = 0; i <= retries; i++) {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), timeout);
     try {
       const res = await fetch(url, { signal: ctl.signal });
-      if (res.status === 429) { lastErr = new Error('호출이 너무 잦습니다(429)'); await sleep(600 * (i + 1)); continue; }
+      if (res.status === 429) { lastErr = new Error('호출이 너무 잦습니다(429)'); await sleep(backoff * 2 ** i); continue; }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (e) {
       lastErr = e;
-      if (i < retries) await sleep(400 * (i + 1));
+      if (i < retries) await sleep(backoff * 2 ** i);
     } finally {
       clearTimeout(t);
     }
