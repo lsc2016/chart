@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-11T21:05:53.747Z",
+ "updatedAt": "2026-11-11T21:17:55.190Z",
  "intervals": [
   "15m",
   "1h",
@@ -32,7 +32,7 @@
    "name": "테슬라",
    "market": "US",
    "currency": "USD",
-   "price": 390.816,
+   "price": 390.84,
    "prevClose": 379.78,
    "changePct": 2.91,
    "time": 1794430801
