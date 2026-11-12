@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-12T03:16:36.156Z",
+ "updatedAt": "2026-11-12T03:39:14.552Z",
  "intervals": [
   "15m",
   "1h",
@@ -52,10 +52,10 @@
    "name": "삼성전자",
    "market": "KR",
    "currency": "KRW",
-   "price": 211500,
+   "price": 212750,
    "prevClose": 206000,
-   "changePct": 2.67,
-   "time": 1794452190
+   "changePct": 3.28,
+   "time": 1794453549
   },
   {
    "symbol": "000660.KS",
@@ -65,17 +65,17 @@
    "price": 1293000,
    "prevClose": 1277000,
    "changePct": 1.25,
-   "time": 1794452192
+   "time": 1794453549
   },
   {
    "symbol": "035420.KS",
    "name": "NAVER",
    "market": "KR",
    "currency": "KRW",
-   "price": 182600,
+   "price": 182300,
    "prevClose": 194300,
-   "changePct": -6.02,
-   "time": 1794452193
+   "changePct": -6.18,
+   "time": 1794453553
   }
  ]
 }
