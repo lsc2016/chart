@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-25T21:13:23.803Z",
+ "updatedAt": "2026-11-25T21:38:07.088Z",
  "intervals": [
   "15m",
   "1h",
@@ -42,9 +42,9 @@
    "name": "S&P500 ETF",
    "market": "US",
    "currency": "USD",
-   "price": 716.81,
+   "price": 716.7,
    "prevClose": 718.78,
-   "changePct": -0.27,
+   "changePct": -0.29,
    "time": 1795640400
   },
   {
